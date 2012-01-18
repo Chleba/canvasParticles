@@ -2,6 +2,11 @@ Particle = JAK.ClassMaker.makeClass({
 	VERSION : '1.0',
 	NAME : 'Particle'
 });
+
+Particle.circleOpt = {};
+Particle.timekeeper = null;
+Particle.particles = [];
+
 Particle.prototype.$constructor = function(opt){
 	this.opt = {
         angle : 0,
@@ -101,6 +106,41 @@ Particle.prototype.draw = function(){
        c.drawImage(this.opt.img, px, py, sw, sh);
     }
     c.restore();
+};
+
+/**
+ * Nastavi souradnice mysi jako stred pro nove vytvarene castice
+ */
+Particle.setOptions = function(opt) {
+	this.circleOpt = opt;
+	if (!this.timekeeper) {
+		this.timekeeper = JAK.Timekeeper.getInstance();
+		this.timekeeper.addListener(this, 'circleTick', 2);
+	}
+};
+
+/**
+ * Casovy krok animace: animovat vsechny existujici a zaroven vytvorit novou; zabit stare
+ */
+Particle.circleTick = function() {
+	var opt = this.circleOpt;
+	//opt.angle = Math.random() * 2 * Math.PI;
+	opt.angle += 0.2;
+	
+	var particle = new this(opt);
+	this.particles.push(particle);
+	
+	opt.canvas.clearRect(0, 0, opt.canvas.width, opt.canvas.height);
+	var d = new Date();
+	
+	for(var i=0;i<this.particles.length;i++){
+		this.particles[i].draw();
+		this.particles[i].update();
+	}
+
+	while (this.particles.length > 50) {
+		this.particles.shift();
+	}
 };
 
 function numRange(min, max){

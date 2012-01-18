@@ -27,6 +27,30 @@
 			simg.src = './img/capeman.png';
 			//pimg.src = './img/blood1.png';
             var canvas = JAK.gel('canvas');
+            
+            function mouseClickCircle(e, elm){
+				var coords = { x : e.clientX, y : e.clientY };
+				var circle = Particle.setOptions({
+					angle : PE.angle,
+					speed : PE.speed,
+					posX : coords.x,
+					posY : coords.y,
+					velX : 0,
+					velY : 0,
+					size : PE.size,
+					maxSize : PE.maxSize,
+					alpha : PE.alpha,
+					shrink : PE.shrink,
+					fade : PE.fade,
+					randomRange : PE.randomRange,
+					img : pimg,
+					canvas : PE.canvas,
+					rect : true,
+					arc : PE.arc,
+					sprites : PE.sprites
+				});
+			}
+            
             function canvasReady(){
                 canvas.style.position = 'relative';
                 canvas.width = document.body.offsetWidth;
@@ -54,6 +78,12 @@
                 PE.arc = false;
                 PE.sprites = false;
                 PE.canvas = canvasCont;
+                
+				/*- mys kolecko -*/
+                try{
+					JAK.Events.addListener(document.body, 'click', mouseClickCircle);
+				} catch(e){ console.log(e); }
+                
             }
             
             JAK.Events.onDomReady(window, canvasReady);
@@ -96,8 +126,6 @@
 					size : PE.size,
 					maxSize : PE.maxSize,
 					alpha : PE.alpha,
-					gravity : parseFloat(PE.gravity),
-					drag : PE.drag,
 					shrink : PE.shrink,
 					fade : PE.fade,
 					randomRange : PE.randomRange,
