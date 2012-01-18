@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>2d particle emitor</title>
+		<meta charset="utf-8">
+		<style type="text/css">
+			body {
+				background-color: #000000;
+				margin: 0px;
+			}
+			/*default slider*/ .arrowsMover{border: 1px solid gray;background-color: lightgray}.horizontal .riderSlider{top: -4px;border: 1px solid black;background-color: darkgray}.vertical .riderSlider{left: -4px;border: 1px solid black;background-color: darkgray}.invalidClassName{background-color: red}/*graphics slider*/ .graphicsSlider.horizontal .riderSlider{top: -3px;border: 1px solid gray;background: url(/img/widgets/slider/rider-h.gif)}.graphicsSlider.vertical .riderSlider{left: -3px;border: 1px solid gray;background: url(/img/widgets/slider/rider-w.gif)}/*button Slider*/ .buttonSlider.horizontal{margin: 0 17px}.buttonSlider.horizontal .plus{width: 15px;height: 15px;top: 0;right:-19px;position: absolute;border: 1px solid darkgray;background: url(/img/widgets/slider/plusminus.gif) no-repeat right top}.buttonSlider.horizontal .minus{width: 15px;height: 15px;top: 0;left: -17px;position: absolute;border: 1px solid darkgray;background: url(/img/widgets/slider/plusminus.gif) no-repeat left top}.buttonSlider.vertical{margin: 17px 0}.buttonSlider.vertical .plus{width: 15px;height: 15px;left: 0;top: -17px;position: absolute;border: 1px solid darkgray;background: url(/img/widgets/slider/plusminus.gif) no-repeat left bottom}.buttonSlider.vertical .minus{width: 15px;height: 15px;left: 0;bottom: -19px;position: absolute;border: 1px solid darkgray;background: url(/img/widgets/slider/plusminus.gif) no-repeat right bottom}/*konkretni nastaveni ukazek*/#sliderDiv3{width: 102px;height: 22px;padding: 3px 0;margin-left: 3px}#sliderDiv4{height: 105px;width: 22px;padding: 0 3px}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript" src="./js/jak.js"></script>
+		<script type="text/javascript" src="./js/timekeeper.js"></script>
+        <script type="text/javascript" src="./js/util.js"></script>
+        <script type="text/javascript" src="./js/particles1.js"></script>
+		<script type="text/javascript" src="./js/slider.js"></script>
+		
+		<canvas id="canvas"></canvas>
+		<script>
+			var particles = [];
+			var pimg = new Image();
+			pimg.src = './img/ParticleSmoke.png';
+            var simg = new Image();
+			simg.src = './img/capeman.png';
+			//pimg.src = './img/blood1.png';
+            var canvas = JAK.gel('canvas');
+            function canvasReady(){
+                canvas.style.position = 'relative';
+                canvas.width = document.body.offsetWidth;
+                canvas.height = 1000;
+                canvas.style.left = '0px';
+                canvas.style.top = '0px';
+                
+                var canvasCont = canvas.getContext('2d');
+    			var timekeeper = JAK.Timekeeper.getInstance();
+    			var tick = timekeeper.addListener(window, 'ticktack', 2);
+                
+                PE = {};
+                PE.angle = 0;
+                PE.speed = 5;
+    			PE.posX = 250;
+    			PE.posY = 250;
+    			PE.velX = 5;
+    			PE.velY = 5;
+    			PE.size = 0.3;
+    			PE.maxSize = 1;
+    			PE.alpha = 0.3;
+    			PE.shrink = 1.04;
+    			PE.fade = 0.005;
+                PE.rect = false;
+                PE.arc = false;
+                PE.sprites = false;
+                PE.canvas = canvasCont;
+            }
+            
+            JAK.Events.onDomReady(window, canvasReady);
+			
+            RPG = {};
+            RPG.N				= 0;
+            RPG.NE				= 1;
+            RPG.E				= 2;
+            RPG.SE				= 3;
+            RPG.S				= 4;
+            RPG.SW				= 5;
+            RPG.W				= 6;
+            RPG.NW				= 7;
+            RPG.CENTER			= 8;
+            var SPRITE = {
+                img : simg,
+        		step : 30,
+        		steps : 3,
+        		interval : 150, /* delka jedne casti spritu */
+        		start : new Date().getTime() /* cas pocatku animace */
+        	}
+            SPRITE[RPG.N] = { top :96, height : 32 };
+        	SPRITE[RPG.W] = { top :32, height : 32 };
+        	SPRITE[RPG.E] = { top : 64, height : 32 };
+        	SPRITE[RPG.S] = { top : 0, height : 32 };
+			
+			function ticktack(){
+				
+				var opt = {
+                    angle : PE.angle,
+                    speed : PE.speed,
+					posX : PE.posX,
+					posY : PE.posY,
+					velX : PE.velX,
+					//velX : numRange(-0.5, 0.5),
+					//velX : 0,
+					velY : PE.velY,
+					//velY : numRange(0.1, 1),
+					//velY : 0,
+					size : PE.size,
+					maxSize : PE.maxSize,
+					alpha : PE.alpha,
+					gravity : parseFloat(PE.gravity),
+					drag : PE.drag,
+					shrink : PE.shrink,
+					fade : PE.fade,
+					randomRange : PE.randomRange,
+					img : pimg,
+					canvas : PE.canvas,
+                    rect : PE.rect,
+                    arc : PE.arc,
+                    sprites : PE.sprites
+				};
+				
+				var particle = new Particle(opt);
+				particles.push(particle);
+				
+				PE.canvas.clearRect(0, 0, 1500, 1000);
+				var d = new Date();
+				for(var i=0;i<particles.length;i++){
+					particles[i].draw();
+					particles[i].update();
+				}
+				while(particles.length > 150){
+					particles.shift();
+				}
+			}
+			
+		</script>
+		
+		<div class="inputs" id="inputs" style="color:#FFF; font-weight:bold; position:absolute; top:50%; left:0px;">
+			<form action="#" method="get">
+                <div id="radios">
+                    <p>
+                        <input type="radio" name="mode" value="image" id="image" checked="checked" /><label for="image">IMAGE</label>
+                        <input type="radio" name="mode" value="rect" id="rect" /><label for="rect">RECT</label>
+                        <input type="radio" name="mode" value="arc" id="arc" /><label for="arc">ARC</label>
+                        <input type="radio" name="mode" value="sprites" id="sprites" /><label for="sprites">SPRITES</label>
+                    </p>
+                </div>
+                <div>
+					angle : <input type="text" name="angle" id="i11" value="" />
+					<div id="s11"></div>
+				</div>
+                <div>
+					speed : <input type="text" name="speed" id="i10" value="" />
+					<div id="s10"></div>
+				</div>
+				<div>
+					velX : <input type="text" name="velX" id="i1" value="" />
+					<div id="s1"></div>
+				</div>
+				<div>
+					velY : <input type="text" name="velY" id="i2" value="" />
+					<div id="s2"></div>
+				</div>
+				<div>
+					sizeStart : <input type="text" name="size" id="i3" value="" />
+					<div id="s3"></div>
+				</div>
+				<div>
+					maxSize : <input type="text" name="maxSize" id="i4" value="" />
+					<div id="s4"></div>
+				</div>
+				<div>
+					alpha : <input type="text" name="alpha" id="i5" value="" />
+					<div id="s5"></div>
+				</div>
+				<div>
+					shrink : <input type="text" name="shrink" id="i8" value="" />
+					<div id="s8"></div>
+				</div>
+				<div>
+					fade : <input type="text" name="fade" id="i9" value="" />
+					<div id="s9"></div>
+				</div>
+				<div>
+					<input type="submit" name="" value="OK" />
+				</div>
+			</form>
+		</div>
+		
+		<script>
+			var sls = [];
+            var inputs = JAK.gel('inputs').getElementsByTagName('input');
+			for(var j=1;j<inputs.length;j++){
+                if(inputs[j].type == 'text'){
+    				var inputName = inputs[j].name;
+                    var input = inputs[j];
+                    var i = input.id;
+                    var s = JAK.gel('s'+(i.split('i')[1]));
+                    
+                    /*-switch(inputName){
+                        case 'size':
+                            var s = new JAK.Slider('s'+i, { input : 'i'+i, min : 0, max : 5, step : 0.01, decimal : 2 });
+                            break;
+                        case 'maxSize':
+                            var s = new JAK.Slider('s'+i, { input : 'i'+i, min : 0, max : 5, step : 0.01, decimal : 2 });
+                            break;
+                        case 'shrink':
+                            var s = new JAK.Slider('s'+i, { input : 'i'+i, min : 0, max : 5, step : 0.01, decimal : 2 });
+                            break;
+                        case 'velX':
+                            var s = new JAK.Slider('s'+i, { input : 'i'+i, min : 0, max : 15, step : 0.1, decimal : 1 });
+                            break;
+                        case 'velY':
+                            var s = new JAK.Slider('s'+i, { input : 'i'+i, min : 0, max : 15, step : 0.1, decimal : 1 });
+                            break;
+                        default :
+                            console.log(i);
+                            var s = new JAK.Slider('s'+i, { input : 'i'+i, min : -5, max : 5, step : 0.1, decimal : 2 });
+                            break;
+                    }-*/
+    				if(inputName == 'size' || inputName == 'maxSize' || inputName == 'shrink'){
+    					var s = new JAK.Slider(s, { input : i, min : 0, max : 5, step : 0.01, decimal : 2 });
+    				} else if (inputName == 'velX' || inputName == 'velY' || inputName == 'speed'){
+    					var s = new JAK.Slider(s, { input : i, min : 0, max : 15, step : 0.1, decimal : 2 });
+    				} else if (inputName == 'angle'){
+    					var s = new JAK.Slider(s, { input : i, min : 0, max : 6.33, step : 0.1, decimal : 2 });
+    				} else {
+    					var s = new JAK.Slider(s, { input : i, min : -5, max : 5, step : 0.1, decimal : 2 });
+    				}
+                }
+			}
+			
+			var EmitorControl = JAK.ClassMaker.makeClass({
+				NAME : 'EmitorControl',
+				VERSION : '1.0',
+				IMPLEMENT : JAK.ISignals
+			});
+			EmitorControl.prototype.$constructor = function(){
+                var form = JAK.gel('inputs');
+                var inputs = form.getElementsByTagName('input');
+                for(var i=0;i<inputs.length;i++){
+                    if(inputs[i].type == 'radio'){
+                        JAK.Events.addListener(inputs[i], 'click', this, '_radio');
+                    } else {
+                       JAK.Events.addListener(inputs[i], 'keydown', this, '_key');
+                    }
+                }
+				this.addListener( 'change', '_change' );
+			};
+            EmitorControl.prototype._key = function(e, elm){
+                var value = elm.value;
+                var iname = elm.name;
+                PE[iname] = value;
+            };
+            EmitorControl.prototype._radio = function(e, elm){
+                switch(elm.value){
+                    case 'image':
+                        PE.rect = false;
+                        PE.arc = false;
+                        PE.sprites = false;
+                        break;
+                    case 'rect':
+                        PE.rect = true;
+                        PE.arc = false;
+                        PE.sprites = false;
+                        break;
+                    case 'arc':
+                        PE.rect = false;
+                        PE.arc = true;
+                        PE.sprites = false;
+                        break;
+                    case 'sprites':
+                        PE.rect = false;
+                        PE.arc = false;
+                        PE.sprites = true;
+                        break;
+                    default : return;
+                }
+            };
+			EmitorControl.prototype._change = function(e){
+				var value = e.target.getValue();
+				var id = e.target.rootElm.id.split('s')[1];
+				var iname = JAK.gel('i'+id).name;
+				PE[iname] = value;
+			};
+			var ec = new EmitorControl();
+			
+		</script>
+		
+	</body>
+</html>
