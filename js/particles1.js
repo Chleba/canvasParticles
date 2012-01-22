@@ -15,11 +15,10 @@ Particle.prototype.$constructor = function(opt){
 		posY : 0,
 		velX : 0,
 		velY : 0,
-		size : 0,
+		size : 1,
 		maxSize : 1,
 		alpha: 0.2,
-		gravity : 1,
-		drag : 1,
+		gravity : 0,
 		shrink : 1,
 		fade : 0,
 		life : 1000,
@@ -60,6 +59,8 @@ Particle.prototype.update = function(){
 	}
     this.posX += this.x;
     this.posY += this.y;
+    
+    this.posY += this.opt.gravity;
     
     this.opt.size *= this.opt.shrink;
 	if(this.opt.maxSize > 0 && this.opt.size > this.opt.maxSize){
