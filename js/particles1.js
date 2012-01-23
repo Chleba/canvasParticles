@@ -125,20 +125,22 @@ Particle.setOptions = function(opt) {
 Particle.circleTick = function() {
 	var opt = this.circleOpt;
 	//opt.angle = Math.random() * 2 * Math.PI;
-	opt.angle += 0.2;
-	
-	var particle = new this(opt);
-	this.particles.push(particle);
+	opt.angle = 0;
+	opt.speed = 20;
+	while(opt.angle < 6.3){
+		opt.angle += 0.2;
+		var particle = new this(opt);
+		this.particles.push(particle);
+	}
 	
 	opt.canvas.clearRect(0, 0, opt.canvas.width, opt.canvas.height);
-	var d = new Date();
 	
 	for(var i=0;i<this.particles.length;i++){
 		this.particles[i].draw();
 		this.particles[i].update();
 	}
 
-	while (this.particles.length > 50) {
+	while (this.particles.length > 500) {
 		this.particles.shift();
 	}
 };
