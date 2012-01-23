@@ -130,3 +130,46 @@ Sprite.prototype.draw = function(pos){
 	    this.time = dt+this.interval;
 	}-*/
 };
+
+var Tail = JAK.ClassMaker.makeClass({
+	NAME : 'Tail',
+	VERSION : '1.0'
+});
+Tail.prototype.$constructor = function(canvas, img){
+	this.ec = [];
+	this.img = img;
+	this.canvas = JAK.gel(canvas).getContext('2d');
+	this.ec.push( JAK.Events.addListener(window, 'mousemove', this, 'tail') );
+	this.coords = { x : 0, y : 0 };
+	this.particles = [];
+	//this.timekeeper = JAK.Timekeeper.getInstance();
+	//this.timekeeper.addListener(this, 'draw', 2);
+};
+Tail.prototype.tail = function(e, elm){
+	var coords = { x : e.clientX, y : e.clientY };
+	var particle = new Particle({
+		posX : coords.x,
+		posY : coords.y,
+		alpha : 1,
+		startSize : 1.2,
+		shrink : 0.96,
+		img : this.img,
+		gravity : -1,
+		life : 2000,
+		//rect : true,
+		//arc : true,
+		canvas : this.canvas
+	});
+	this.particles.push(particle);
+};
+Tail.prototype.draw = function(){
+	//this.canvas.clearRect(0, 0, 1500, 1000);
+	for(var i=0;i<this.particles.length;i++){
+		if(this.particles[i].opt == null){
+			this.particles.splice(i, 1);
+		} else {
+			this.particles[i].draw();
+			this.particles[i].update();
+		}
+	}
+};

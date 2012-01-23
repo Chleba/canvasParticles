@@ -27,6 +27,7 @@
 			simg.src = './img/capeman.png';
 			//pimg.src = './img/blood1.png';
             var canvas = JAK.gel('canvas');
+            var chTail = new Tail('canvas', pimg);
             
             function mouseClickCircle(e, elm){
 				var coords = { x : e.clientX, y : e.clientY };
@@ -73,17 +74,20 @@
     			PE.maxSize = 1;
     			PE.alpha = 0.3;
     			PE.shrink = 1.04;
+    			PE.gravity = 0;
     			PE.fade = 0.005;
+    			PE.life = 2000;
                 PE.rect = false;
                 PE.arc = false;
                 PE.sprites = false;
                 PE.canvas = canvasCont;
                 
 				/*- mys kolecko -*/
+				/*
                 try{
 					JAK.Events.addListener(document.body, 'click', mouseClickCircle);
 				} catch(e){ console.log(e); }
-                
+                */
             }
             
             JAK.Events.onDomReady(window, canvasReady);
@@ -128,7 +132,7 @@
 					alpha : PE.alpha,
 					shrink : PE.shrink,
 					fade : PE.fade,
-					randomRange : PE.randomRange,
+					life : PE.life,
 					img : pimg,
 					canvas : PE.canvas,
                     rect : PE.rect,
@@ -142,12 +146,19 @@
 				PE.canvas.clearRect(0, 0, 1500, 1000);
 				var d = new Date();
 				for(var i=0;i<particles.length;i++){
-					particles[i].draw();
-					particles[i].update();
-				}
-				while(particles.length > 150){
+					if(particles[i].opt == null){
+						particles.splice(i, 1);
+					} else {
+						particles[i].draw();
+						particles[i].update();
+					}
+				}				
+				/*while(particles.length > 150){
 					particles.shift();
-				}
+				}*/
+				
+				/*------ tail -----*/
+				if(chTail){ chTail.draw(); }
 			}
 			
 		</script>

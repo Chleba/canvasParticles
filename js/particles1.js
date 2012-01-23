@@ -15,13 +15,13 @@ Particle.prototype.$constructor = function(opt){
 		posY : 0,
 		velX : 0,
 		velY : 0,
-		size : 0,
+		size : 1,
 		maxSize : 1,
 		alpha: 0.2,
-		gravity : 1,
-		drag : 1,
+		gravity : 0,
 		shrink : 1,
 		fade : 0,
+		life : 1000,
 		img : null,
 		canvas : null,
         rect : false,
@@ -31,6 +31,9 @@ Particle.prototype.$constructor = function(opt){
 	for(var p in opt){
 		this.opt[p] = opt[p];
 	}
+	
+	this.startTime = new Date().getTime();
+	
     this.posX = this.opt.posX+numRange(this.opt.velX*-1, this.opt.velX);
     this.posY = this.opt.posY+numRange(this.opt.velY*-1, this.opt.velY);
     if(this.opt.sprites){
@@ -43,9 +46,21 @@ Particle.prototype.$constructor = function(opt){
 	this.x = a-this.posX;
 	this.y = b-this.posY;
 };
+Particle.prototype.$destructor = function(){
+	for(var p in this){
+		this[p] = null;
+	}
+};
 Particle.prototype.update = function(){
+	var delta = this.startTime - new Date().getTime();
+	if((delta*-1) >= this.opt.life){
+		this.$destructor();
+		return;
+	}
     this.posX += this.x;
     this.posY += this.y;
+    
+    this.posY += this.opt.gravity;
     
     this.opt.size *= this.opt.shrink;
 	if(this.opt.maxSize > 0 && this.opt.size > this.opt.maxSize){
