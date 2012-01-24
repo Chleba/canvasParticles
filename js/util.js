@@ -210,7 +210,6 @@ Explo.prototype._mdown = function(e, elm){
 	this.boom();
 };
 Explo.prototype.boom = function(){
-	console.log(this.pos);
 	for(var i=0;i<20;i++){
 		var particle = new Particle(this.pOpt);
 		//this.pOpt.angle += this.angleStep;

@@ -22,6 +22,7 @@ Particle.prototype.$constructor = function(opt){
 		shrink : 1,
 		fade : 0,
 		life : 1000,
+		rotate : false,
 		img : null,
 		canvas : null,
         rect : false,
@@ -43,6 +44,11 @@ Particle.prototype.$constructor = function(opt){
     var a = this.posX + this.opt.speed * Math.cos(this.opt.angle);
     var b = this.posY + this.opt.speed * Math.sin(this.opt.angle);
 
+	this.opt.rotate = this.opt.rotate !== false ? this.opt.rotate : 0;
+	
+	this.rotate = 0;
+	this.rad = Math.PI/180;
+	
 	this.x = a-this.posX;
 	this.y = b-this.posY;
 };
@@ -61,6 +67,8 @@ Particle.prototype.update = function(){
     this.posY += this.y;
     
     this.posY += this.opt.gravity;
+
+	this.rotate += this.opt.rotate*this.rad;
     
     this.opt.size *= this.opt.shrink;
 	if(this.opt.maxSize > 0 && this.opt.size > this.opt.maxSize){
@@ -73,12 +81,21 @@ Particle.prototype.update = function(){
 };
 Particle.prototype._drawRect = function(){
     var c = this.opt.canvas;
+    //c.save();
+    
     var sw = 50*this.opt.size;
 	var sh = 50*this.opt.size;
-    var px = this.posX-(sw*0.5);
-    var py = this.posY-(sh*0.5);
+    var px = this.posX/*+(sw*0.5)*/;
+    var py = this.posY/*+(sh*0.5)*/;
+    
+    c.translate(px, py);
+    c.rotate(this.rotate);
+    c.translate((sw/2)*-1, (sh/2)*-1);
+    
     c.fillStyle = '#fff';
-    c.fillRect(px, py, sw, sh);
+    c.fillRect(0, 0, sw, sh);
+    
+    c.restore();
 };
 Particle.prototype._drawArc = function(){
     var c = this.opt.canvas;
@@ -89,9 +106,16 @@ Particle.prototype._drawArc = function(){
     c.globalAlpha = this.opt.alpha;
     var sw = 50*this.opt.size;
 	var sh = 50*this.opt.size;
-    var px = this.posX-(sw*0.5);
-    var py = this.posY-(sh*0.5);
-    c.arc(px, py, sw, 0, Math.PI*2, true);
+    var px = this.posX;
+    var py = this.posY;
+    
+    c.translate(px, py);
+    if(this.opt.rotate){
+		c.rotate(this.rotate);
+	}
+    c.translate((sw/2)*-1, (sh/2)*-1);
+    
+    c.arc(0, 0, sw, 0, Math.PI*2, true);
     c.stroke();
     //c.fill();
 };
@@ -111,14 +135,19 @@ Particle.prototype.draw = function(){
 	var sw = this.opt.img.width*this.opt.size;
 	var sh = this.opt.img.height*this.opt.size;
     
-    var px = this.posX-(sw*0.5);
-    var py = this.posY-(sh*0.5);
+    var px = this.posX;
+    var py = this.posY;
     
     if(this.opt.rect === true){ this._drawRect(); }
     else if(this.opt.arc === true){ this._drawArc(); }
     else if(this.opt.sprites === true){ this._drawSprites(); }/*- NEED UTIL.JS -*/
     else {
-       c.drawImage(this.opt.img, px, py, sw, sh);
+		c.translate(px, py);
+		if(this.opt.rotate){
+			c.rotate(this.rotate);
+		}
+		c.translate((sw/2)*-1, (sh/2)*-1);
+		c.drawImage(this.opt.img, 0, 0, sw, sh);
     }
     c.restore();
 };
