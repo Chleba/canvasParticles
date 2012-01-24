@@ -150,6 +150,8 @@ Tail.prototype.tail = function(e, elm){
 	var particle = new Particle({
 		posX : coords.x,
 		posY : coords.y,
+		velX : 5,
+		velY : 5,
 		alpha : 1,
 		startSize : 1.2,
 		shrink : 0.96,
@@ -166,6 +168,59 @@ Tail.prototype.draw = function(){
 	//this.canvas.clearRect(0, 0, 1500, 1000);
 	for(var i=0;i<this.particles.length;i++){
 		if(this.particles[i].opt == null){
+			this.particles.splice(i, 1);
+		} else {
+			this.particles[i].draw();
+			this.particles[i].update();
+		}
+	}
+};
+
+var Explo = JAK.ClassMaker.makeClass({
+	NAME : 'Explo',
+	VERSION : '1.0'
+});
+Explo.prototype.$constructor = function(canvas, img){
+	this.ec = [];
+	this.pos = { x : 0, y : 0 };
+	this.canvas = JAK.gel(canvas).getContext('2d');
+	this.img = img;
+	this.pOpt = {
+		angle : 0,
+		posX : this.pos.x,
+		posY : this.pos.y,
+		velX : 0,
+		velY : 0,
+		alpha : 1,
+		startSize : 1,
+		shrink : 0.94,
+		life : 4000,
+		gravity : 2,
+		speed : 10,
+		img : this.img,
+		canvas : this.canvas
+	}
+	this.particles = [];
+	this.angleStep = (Math.PI*2)/20;
+	this.ec.push( JAK.Events.addListener(window, 'click', this, '_mdown') );
+};
+Explo.prototype._mdown = function(e, elm){
+	var coords = { x : e.clientX, y : e.clientY };
+	this.pos = coords;
+	this.boom();
+};
+Explo.prototype.boom = function(){
+	console.log(this.pos);
+	for(var i=0;i<20;i++){
+		var particle = new Particle(this.pOpt);
+		//this.pOpt.angle += this.angleStep;
+		this.particles.push(particle);
+	}
+};
+Explo.prototype.draw = function(){
+	//console.log('a');
+	for(var i=0;i<this.particles.length;i++){
+		if(this.particles[i].pOpt == null){
 			this.particles.splice(i, 1);
 		} else {
 			this.particles[i].draw();

@@ -28,6 +28,7 @@
 			//pimg.src = './img/blood1.png';
             var canvas = JAK.gel('canvas');
             var chTail = new Tail('canvas', pimg);
+            var chExplo = new Explo('canvas', pimg);
             
             function mouseClickCircle(e, elm){
 				var coords = { x : e.clientX, y : e.clientY };
@@ -158,7 +159,8 @@
 				}*/
 				
 				/*------ tail -----*/
-				if(chTail){ chTail.draw(); }
+				//if(chTail){ chTail.draw(); }
+				if(chExplo){ chExplo.draw(); }
 			}
 			
 		</script>
