@@ -22,7 +22,7 @@
 		<script>
 			var particles = [];
 			var pimg = new Image();
-			pimg.src = './img/ParticleSmoke.png';
+			pimg.src = './img/ParticleStarBlue.png';
             var simg = new Image();
 			simg.src = './img/capeman.png';
 			//pimg.src = './img/blood1.png';
@@ -77,6 +77,7 @@
     			PE.gravity = 0;
     			PE.fade = 0.005;
     			PE.life = 2000;
+    			PE.rotate = true;
                 PE.rect = false;
                 PE.arc = false;
                 PE.sprites = false;
@@ -133,6 +134,7 @@
 					shrink : PE.shrink,
 					fade : PE.fade,
 					life : PE.life,
+					rotate : PE.rotate,
 					img : pimg,
 					canvas : PE.canvas,
                     rect : PE.rect,

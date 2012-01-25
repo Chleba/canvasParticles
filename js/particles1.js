@@ -22,6 +22,7 @@ Particle.prototype.$constructor = function(opt){
 		shrink : 1,
 		fade : 0,
 		life : 1000,
+		rotate : false,
 		img : null,
 		canvas : null,
         rect : false,
@@ -70,6 +71,11 @@ Particle.prototype.update = function(){
 	if(this.opt.alpha < 0){
 		this.opt.alpha = 0;
 	}
+	
+	if(this.opt.rotate === true){
+		this.rotate = this.opt.angle+((Math.PI*2)/60);
+	}
+	
 };
 Particle.prototype._drawRect = function(){
     var c = this.opt.canvas;
