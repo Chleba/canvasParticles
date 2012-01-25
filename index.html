@@ -28,6 +28,7 @@
 			//pimg.src = './img/blood1.png';
             var canvas = JAK.gel('canvas');
             var chTail = new Tail('canvas', pimg);
+            //var chExplo = new Explo('canvas', pimg);
             
             function mouseClickCircle(e, elm){
 				var coords = { x : e.clientX, y : e.clientY };
@@ -77,7 +78,7 @@
     			PE.gravity = 0;
     			PE.fade = 0.005;
     			PE.life = 2000;
-    			PE.rotate = true;
+    			PE.rotate = false;
                 PE.rect = false;
                 PE.arc = false;
                 PE.sprites = false;
@@ -161,6 +162,7 @@
 				
 				/*------ tail -----*/
 				if(chTail){ chTail.draw(); }
+				//if(chExplo){ chExplo.draw(); }
 			}
 			
 		</script>
@@ -178,6 +180,10 @@
                 <div>
 					angle : <input type="text" name="angle" id="i11" value="" />
 					<div id="s11"></div>
+				</div>
+				<div>
+					rotate : <input type="text" name="rotate" id="i12" value="" />
+					<div id="s12"></div>
 				</div>
                 <div>
 					speed : <input type="text" name="speed" id="i10" value="" />
@@ -254,7 +260,9 @@
     					var s = new JAK.Slider(s, { input : i, min : 0, max : 15, step : 0.1, decimal : 2 });
     				} else if (inputName == 'angle'){
     					var s = new JAK.Slider(s, { input : i, min : 0, max : 6.33, step : 0.1, decimal : 2 });
-    				} else {
+    				} else if(inputName == 'rotate'){
+						var s = new JAK.Slider(s, { input : i, min : 0, max : 90, step : 1, decimal : 0 });
+					} else {
     					var s = new JAK.Slider(s, { input : i, min : -5, max : 5, step : 0.1, decimal : 2 });
     				}
                 }
