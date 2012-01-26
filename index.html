@@ -27,7 +27,28 @@
 			simg.src = './img/capeman.png';
 			//pimg.src = './img/blood1.png';
             var canvas = JAK.gel('canvas');
-            var chTail = new Tail('canvas', pimg);
+            
+            PE = {};
+			PE.angle = 0;
+			PE.speed = 5;
+			PE.posX = 250;
+			PE.posY = 250;
+			PE.velX = 5;
+			PE.velY = 5;
+			PE.size = 0.3;
+			PE.maxSize = 1;
+			PE.alpha = 0.3;
+			PE.shrink = 1.04;
+			PE.gravity = 0;
+			PE.fade = 0.005;
+			PE.life = 2000;
+			PE.rotate = false;
+			PE.rect = false;
+			PE.arc = false;
+			PE.sprites = false;
+			PE.canvas = canvas.getContext('2d');
+            
+            var chTail = new Tail('canvas', pimg, PE);
             //var chExplo = new Explo('canvas', pimg);
             
             function mouseClickCircle(e, elm){
@@ -64,7 +85,7 @@
     			var timekeeper = JAK.Timekeeper.getInstance();
     			var tick = timekeeper.addListener(window, 'ticktack', 2);
                 
-                PE = {};
+                /*PE = {};
                 PE.angle = 0;
                 PE.speed = 5;
     			PE.posX = 250;
@@ -82,7 +103,7 @@
                 PE.rect = false;
                 PE.arc = false;
                 PE.sprites = false;
-                PE.canvas = canvasCont;
+                PE.canvas = canvasCont;*/
                 
 				/*- mys kolecko -*/
 				/*

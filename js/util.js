@@ -135,7 +135,8 @@ var Tail = JAK.ClassMaker.makeClass({
 	NAME : 'Tail',
 	VERSION : '1.0'
 });
-Tail.prototype.$constructor = function(canvas, img){
+Tail.prototype.$constructor = function(canvas, img, opt){
+	this.opt = opt;
 	this.ec = [];
 	this.img = img;
 	this.canvas = JAK.gel(canvas).getContext('2d');
@@ -150,16 +151,18 @@ Tail.prototype.tail = function(e, elm){
 	var particle = new Particle({
 		posX : coords.x,
 		posY : coords.y,
-		velX : 5,
-		velY : 5,
-		alpha : 1,
-		startSize : 1.2,
-		shrink : 0.96,
+		rotate : this.opt.rotate,
+		velX : this.opt.velX,
+		velY : this.opt.velY,
+		alpha : this.opt.alpha,
+		startSize : this.opt.startSize,
+		shrink : this.opt.shrink,
 		img : this.img,
+		//gravity : this.opt.gravity,
 		gravity : -1,
-		life : 2000,
-		//rect : true,
-		//arc : true,
+		life : this.opt.life,
+		rect : this.opt.rect,
+		arc : this.opt.arc,
 		canvas : this.canvas
 	});
 	this.particles.push(particle);
