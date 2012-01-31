@@ -30,14 +30,14 @@
             
             PE = {};
 			PE.angle = 0;
-			PE.speed = 5;
+			PE.speed = 0;
 			PE.posX = 250;
 			PE.posY = 250;
-			PE.velX = 5;
-			PE.velY = 5;
+			PE.velX = 0;
+			PE.velY = 0;
 			PE.size = 0.3;
 			PE.maxSize = 1;
-			PE.alpha = 0.3;
+			PE.alpha = 1;
 			PE.shrink = 1.04;
 			PE.gravity = 0;
 			PE.fade = 0.005;
@@ -45,7 +45,7 @@
 			PE.rotate = false;
 			PE.rect = false;
 			PE.arc = false;
-			PE.sprites = false;
+			PE.sprites = true;
 			PE.canvas = canvas.getContext('2d');
             
             var chTail = new Tail('canvas', pimg, PE);
@@ -172,6 +172,7 @@
 				for(var i=0;i<particles.length;i++){
 					if(particles[i].opt == null){
 						particles.splice(i, 1);
+						i--;
 					} else {
 						particles[i].draw();
 						particles[i].update();
@@ -182,7 +183,7 @@
 				}*/
 				
 				/*------ tail -----*/
-				if(chTail){ chTail.draw(); }
+				//if(chTail){ chTail.draw(); }
 				//if(chExplo){ chExplo.draw(); }
 			}
 			

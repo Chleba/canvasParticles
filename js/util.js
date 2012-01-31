@@ -100,7 +100,7 @@ Sprite.prototype.$constructor = function(canvas, img, opt){
     this.start = this.opt.start;
 	this.interval = this.opt.interval;
 	this.step = this.interval/this.opt.steps;
-	this.stepw = this.opt.step;
+	this.stepw = 30;
 	this.direction = RPG.S;
 	//this.timekeeper = JAK.Timekeeper.getInstance();
 	//this.tick = this.timekeeper.addListener(this, 'draw', 2);
@@ -112,8 +112,8 @@ Sprite.prototype.draw = function(pos){
 
 	var delta = new Date().getTime() - this.start; /* jak dlouho uz bezi animace */
 	var index = Math.floor(delta / this.interval) % 3;
-	var sx = index*this.step; /* sirkovy zacatek zleva */
-    if(this.img){
+	var sx = index*this.stepw; /* sirkovy zacatek zleva */
+    if (this.img) {
 	   this.canvas.drawImage(this.img, sx, sy, this.stepw, height, pos.x, pos.y, this.stepw, height);
     }
     /*-
