@@ -159,7 +159,7 @@ Tail.prototype.tail = function(e, elm){
 		shrink : this.opt.shrink,
 		img : this.img,
 		//gravity : this.opt.gravity,
-		gravity : -1,
+		gravity : this.opt.gravity,
 		life : this.opt.life,
 		rect : this.opt.rect,
 		arc : this.opt.arc,

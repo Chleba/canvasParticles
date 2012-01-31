@@ -30,14 +30,14 @@
             
             PE = {};
 			PE.angle = 0;
-			PE.speed = 0;
+			PE.speed = 5;
 			PE.posX = 250;
 			PE.posY = 250;
-			PE.velX = 0;
-			PE.velY = 0;
+			PE.velX = 5;
+			PE.velY = 5;
 			PE.size = 0.3;
 			PE.maxSize = 1;
-			PE.alpha = 1;
+			PE.alpha = 0.4;
 			PE.shrink = 1.04;
 			PE.gravity = 0;
 			PE.fade = 0.005;
@@ -154,6 +154,7 @@
 					maxSize : PE.maxSize,
 					alpha : PE.alpha,
 					shrink : PE.shrink,
+					gravity : PE.gravity,
 					fade : PE.fade,
 					life : PE.life,
 					rotate : PE.rotate,
@@ -183,7 +184,7 @@
 				}*/
 				
 				/*------ tail -----*/
-				//if(chTail){ chTail.draw(); }
+				if(chTail){ chTail.draw(); }
 				//if(chExplo){ chExplo.draw(); }
 			}
 			
@@ -206,6 +207,10 @@
 				<div>
 					rotate : <input type="text" name="rotate" id="i12" value="" />
 					<div id="s12"></div>
+				</div>
+				<div>
+					gravity : <input type="text" name="gravity" id="i13" value="" />
+					<div id="s13"></div>
 				</div>
                 <div>
 					speed : <input type="text" name="speed" id="i10" value="" />
@@ -278,7 +283,7 @@
                     }-*/
     				if(inputName == 'size' || inputName == 'maxSize' || inputName == 'shrink'){
     					var s = new JAK.Slider(s, { input : i, min : 0, max : 5, step : 0.01, decimal : 2 });
-    				} else if (inputName == 'velX' || inputName == 'velY' || inputName == 'speed'){
+    				} else if (inputName == 'velX' || inputName == 'velY' || inputName == 'speed' || inputName == 'gravity'){
     					var s = new JAK.Slider(s, { input : i, min : 0, max : 15, step : 0.1, decimal : 2 });
     				} else if (inputName == 'angle'){
     					var s = new JAK.Slider(s, { input : i, min : 0, max : 6.33, step : 0.1, decimal : 2 });
